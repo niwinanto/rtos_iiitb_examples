@@ -1,63 +1,7 @@
-/**
-  ******************************************************************************
-  * @file    Demonstrations/Src/main.c 
-  * @author  MCD Application Team
-  * @version V1.4.3
-  * @date    06-May-2016
-  * @brief   This demo describes how to use accelerometer to control mouse on 
-  *          PC.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright © 2016 STMicroelectronics International N.V. 
-  * All rights reserved.</center></h2>
-  *
-  * Redistribution and use in source and binary forms, with or without 
-  * modification, are permitted, provided that the following conditions are met:
-  *
-  * 1. Redistribution of source code must retain the above copyright notice, 
-  *    this list of conditions and the following disclaimer.
-  * 2. Redistributions in binary form must reproduce the above copyright notice,
-  *    this list of conditions and the following disclaimer in the documentation
-  *    and/or other materials provided with the distribution.
-  * 3. Neither the name of STMicroelectronics nor the names of other 
-  *    contributors to this software may be used to endorse or promote products 
-  *    derived from this software without specific written permission.
-  * 4. This software, including modifications and/or derivative works of this 
-  *    software, must execute solely and exclusively on microcontroller or
-  *    microprocessor devices manufactured by or for STMicroelectronics.
-  * 5. Redistribution and use of this software other than as permitted under 
-  *    this license is void and will automatically terminate your rights under 
-  *    this license. 
-  *
-  * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS" 
-  * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT 
-  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
-  * PARTICULAR PURPOSE AND NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY
-  * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT 
-  * SHALL STMICROELECTRONICS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
-  * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
-  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
-  ******************************************************************************
-  */
-/* Includes ------------------------------------------------------------------*/
+
 #include "main.h"
 
-/** @addtogroup STM32F4xx_HAL_Demonstrations
-  * @{
-  */
 
-/** @addtogroup Demo
-  * @{
-  */ 
-
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
 #define KEY_PRESSED     0x01
 #define KEY_NOT_PRESSED 0x00
 
@@ -243,24 +187,6 @@ static void Demo_Exec(void)
   }
 }
 
-/**
-  * @brief  Initializes the USB for the demonstration application.
-  * @param  None
-  * @retval None
-  */
-static uint32_t Demo_USBConfig(void)
-{
-  /* Init Device Library */
-  USBD_Init(&hUSBDDevice, &HID_Desc, 0);
-  
-  /* Add Supported Class */
-  USBD_RegisterClass(&hUSBDDevice, USBD_HID_CLASS);
-  
-  /* Start Device Process */
-  USBD_Start(&hUSBDDevice);
-  
-  return 0;
-}
 
 /**
   * @brief  Configures the TIM Peripheral.
@@ -475,40 +401,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   }
 }
 
-/**
-* @brief  USBD_HID_GetPos
-* @param  None
-* @retval Pointer to report
-*/
-static uint8_t *USBD_HID_GetPos (void)
-{
-  static uint8_t HID_Buffer[4] = {0};
-  
-  HID_Buffer[1] = 0;
-  HID_Buffer[2] = 0;
-  /* LEFT Direction */
-  if((X_Offset) < ThreadholdAcceleroLow)
-  {
-    HID_Buffer[1] -= CURSOR_STEP;
-  }
-  /* RIGHT Direction */ 
-  if((X_Offset) > ThreadholdAcceleroHigh)
-  {
-   HID_Buffer[1] += CURSOR_STEP;
-  } 
-  /* DOWN Direction */
-  if((Y_Offset) < ThreadholdAcceleroLow)
-  {
-    HID_Buffer[2] += CURSOR_STEP;
-  }
-  /* UP Direction */ 
-  if((Y_Offset) > ThreadholdAcceleroHigh)
-  {
-    HID_Buffer[2] -= CURSOR_STEP;
-  } 
-  
-  return HID_Buffer;
-}
 
 /**
   * @brief  This function is executed in case of error occurrence.
